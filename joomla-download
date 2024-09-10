@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+shopt -s lastpipe nullglob dotglob
+
+declare -r app="${0##*/}"
+declare -r base_url="https://github.com/joomla/joomla-cms/releases"
+
+joomla_latest_version() {
+    declare -r url="$(curl -sL -o /dev/null -w %{url_effective} "${base_url}/latest")"
+    echo "${url##*/}"
+}
+
+joomla_download_url() {
+    declare -r ver="${1}"
+    declare -r stability="${ver##*-}"
+
+    case "${stability}" in
+    alpha*)
+        echo "${base_url}/download/${ver}/Joomla_${ver}-Alpha-Full_Package.tar.gz"
+        ;;
+    beta*)
+        echo "${base_url}/download/${ver}/Joomla_${ver}-Beta-Full_Package.tar.gz"
+        ;;
+    rc*)
+        echo "${base_url}/download/${ver}/Joomla_${ver}-Release_Candidate-Full_Package.tar.gz"
+        ;;
+    *)
+        echo "${base_url}/download/${ver}/Joomla_${ver}-Stable-Full_Package.tar.gz"
+        ;;
+    esac
+}
+
+error() {
+    echo "${app}: ${1}" >&2
+    exit 1
+}
+
+if [[ -z "${1:-}" || "${1:-}" =~ --help|-h ]]; then
+    echo -n "Usage: ${app} <path> [<version>]
+
+Examples:
+
+  # Download latest version
+  ${app} ~/projects/joomla
+
+  # Use current directory
+  ${app} . 4.4.8
+  "
+    exit 0
+fi
+
+if ! which curl &>/dev/null; then
+    error "curl is not installed"
+fi
+
+if ! which tar &>/dev/null; then
+    error "tar is not installed"
+fi
+
+declare -r path="${1}"
+
+if [[ ! -d "${path}" ]]; then
+    error "Path does not exist: ${path}"
+fi
+
+declare -r version="${2:-${JOOMLA_VERSION:-$(joomla_latest_version)}}"
+declare -r download_url="$(joomla_download_url "${version}")"
+
+echo "Trying to download Joomla ${version}"
+echo
+echo "${download_url}"
+echo
+
+if ! curl -sL -o /dev/null --head --fail "${download_url}"; then
+    error "Joomla ${version} is not available"
+fi
+
+curl -sL "${download_url}" | tar -xzv -C "${path}"
