@@ -6,9 +6,44 @@ shopt -s lastpipe nullglob dotglob
 declare -r app="${0##*/}"
 declare -r base_url="https://github.com/joomla/joomla-cms/releases"
 
+joomla_find_version() {
+    declare -r ver="${1:-}"
+
+    if [[ -z "${ver}" ]]; then
+        joomla_latest_version
+        return
+    fi
+
+    declare major="${ver%%.*}"
+    case "${ver}" in
+    1.0*)
+        major='10'
+        ;;
+    1.5*)
+        major='15'
+        ;;
+    1 | 1.* | 2 | 2.*)
+        major='25'
+        ;;
+    esac
+
+    joomla_get_versions "${major}" | while read v; do
+        if [[ "${v}" == "${ver}" ]] || [[ "${v}" == "${ver}."* ]]; then
+            echo "${v}"
+            return
+        fi
+    done
+}
+
 joomla_latest_version() {
     declare -r url="$(curl -sL -o /dev/null -w %{url_effective} "${base_url}/latest")"
     echo "${url##*/}"
+}
+
+joomla_get_versions() {
+    curl -sL "https://downloads.joomla.org/cms/joomla${1}" |
+        sed -Ene 's/^.*Joomla!\s+([0-9\.]+)\s+release.*$/\1/p' |
+        sort --unique --reverse --version-sort
 }
 
 joomla_download_url() {
@@ -59,12 +94,15 @@ if ! which tar &>/dev/null; then
 fi
 
 declare -r path="${1}"
-
 if [[ ! -d "${path}" ]]; then
-    error "Path does not exist: ${path}"
+    error "path does not exist: ${path}"
 fi
 
-declare -r version="${2:-${JOOMLA_VERSION:-$(joomla_latest_version)}}"
+declare -r version="$(joomla_find_version "${2:-${JOOMLA_VERSION:-}}")"
+if [[ -z "${version}" ]]; then
+    error "can't find any appropriate version"
+fi
+
 declare -r download_url="$(joomla_download_url "${version}")"
 
 echo "Trying to download Joomla ${version}"
