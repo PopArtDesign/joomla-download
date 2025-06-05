@@ -60,7 +60,7 @@ Examples:
   # Download the latest 3.x version (e.g. 3.10.12)
   ${app} ~/projects/joomla 3
 
-  # Use current directory
+  # Use current directory (downloads latest version)
   ${app} .
   "
     exit 0

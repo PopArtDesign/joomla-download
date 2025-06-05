@@ -11,9 +11,18 @@ joomla-download <path> [<version>]
 ## Examples
 
 ```sh
-# Download latest version
+# Download the latest version
 joomla-download ~/projects/joomla
 
-# Use current directory
-joomla-download . 4.4.8
+# Download precise version
+joomla-download ~/projects/joomla 5.2.1
+
+# Download the latest 4.3.x version (e.g. 4.3.4)
+joomla-download ~/projects/joomla 4.3
+
+# Download the latest 3.x version (e.g. 3.10.12)
+joomla-download ~/projects/joomla 3
+
+# Use current directory (downloads latest version)
+joomla-download .
 ```
