@@ -76,10 +76,10 @@ joomla_find_version() {
 
     declare major="${ver%%.*}"
     case "${ver}" in
-    1.0*)
+    1.0 | 1.0.*)
         major='10'
         ;;
-    1.5*)
+    1.5 | 1.5.*)
         major='15'
         ;;
     1 | 1.* | 2 | 2.*)
