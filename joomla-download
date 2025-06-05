@@ -6,6 +6,66 @@ shopt -s lastpipe nullglob dotglob
 declare -r app="${0##*/}"
 declare -r base_url="https://github.com/joomla/joomla-cms/releases"
 
+main() {
+    if [[ -z "${1:-}" || "${1:-}" =~ --help|-h ]]; then
+        help
+    fi
+
+    if ! which curl &>/dev/null; then
+        error "curl is not installed"
+    fi
+
+    if ! which tar &>/dev/null; then
+        error "tar is not installed"
+    fi
+
+    declare -r path="${1}"
+    if [[ ! -d "${path}" ]]; then
+        error "path does not exist: ${path}"
+    fi
+
+    declare -r version="$(joomla_find_version "${2:-${JOOMLA_VERSION:-}}")"
+    if [[ -z "${version}" ]]; then
+        error "can't find any appropriate version"
+    fi
+
+    declare -r download_url="$(joomla_download_url "${version}")"
+
+    echo "Trying to download Joomla ${version}"
+    echo
+    echo "${download_url}"
+    echo
+
+    if ! curl -sL -o /dev/null --head --fail "${download_url}"; then
+        error "Joomla ${version} is not available"
+    fi
+
+    curl -sL "${download_url}" | tar -xzv -C "${path}"
+}
+
+help() {
+    echo -n "Usage: ${app} <path> [<version>]
+
+Examples:
+
+  # Download the latest version
+  ${app} ~/projects/joomla
+
+  # Download precise version
+  ${app} ~/projects/joomla 5.2.1
+
+  # Download the latest 4.3.x version (e.g. 4.3.4)
+  ${app} ~/projects/joomla 4.3
+
+  # Download the latest 3.x version (e.g. 3.10.12)
+  ${app} ~/projects/joomla 3
+
+  # Use current directory
+  ${app} .
+  "
+    exit 0
+}
+
 joomla_find_version() {
     declare -r ver="${1:-}"
 
@@ -71,47 +131,4 @@ error() {
     exit 1
 }
 
-if [[ -z "${1:-}" || "${1:-}" =~ --help|-h ]]; then
-    echo -n "Usage: ${app} <path> [<version>]
-
-Examples:
-
-  # Download latest version
-  ${app} ~/projects/joomla
-
-  # Use current directory
-  ${app} . 4.4.8
-  "
-    exit 0
-fi
-
-if ! which curl &>/dev/null; then
-    error "curl is not installed"
-fi
-
-if ! which tar &>/dev/null; then
-    error "tar is not installed"
-fi
-
-declare -r path="${1}"
-if [[ ! -d "${path}" ]]; then
-    error "path does not exist: ${path}"
-fi
-
-declare -r version="$(joomla_find_version "${2:-${JOOMLA_VERSION:-}}")"
-if [[ -z "${version}" ]]; then
-    error "can't find any appropriate version"
-fi
-
-declare -r download_url="$(joomla_download_url "${version}")"
-
-echo "Trying to download Joomla ${version}"
-echo
-echo "${download_url}"
-echo
-
-if ! curl -sL -o /dev/null --head --fail "${download_url}"; then
-    error "Joomla ${version} is not available"
-fi
-
-curl -sL "${download_url}" | tar -xzv -C "${path}"
+main "$@"
