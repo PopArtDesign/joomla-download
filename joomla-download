@@ -44,7 +44,19 @@ main() {
 }
 
 help() {
-    echo -n "Usage: ${app} <path> [<version>]
+    echo -n "Download and extract a specific version of Joomla!. (c) PopArtDesign, https://popartdesign.ru
+
+Usage: ${app} <path> [<version>]
+
+Arguments:
+  <path>      The directory where Joomla! will be downloaded and extracted.
+  <version>   Optional. The specific version of Joomla! to download.
+              If not provided, the latest stable version will be downloaded.
+              Supports semantic versioning (e.g., 5.2.1), major.minor (e.g., 4.3),
+              or major (e.g., 3).
+
+Options:
+  -h, --help  Show this help message and exit.
 
 Examples:
 
