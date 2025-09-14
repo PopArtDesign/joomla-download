@@ -59,22 +59,12 @@ Options:
   -h, --help  Show this help message and exit.
 
 Examples:
-
-  # Download the latest version
-  ${app} ~/projects/joomla
-
-  # Download precise version
-  ${app} ~/projects/joomla 5.2.1
-
-  # Download the latest 4.3.x version (e.g. 4.3.4)
-  ${app} ~/projects/joomla 4.3
-
-  # Download the latest 3.x version (e.g. 3.10.12)
-  ${app} ~/projects/joomla 3
-
-  # Use current directory (downloads latest version)
-  ${app} .
-  "
+  ${app} ~/projects/joomla        # Download the latest version
+  ${app} ~/projects/joomla 5.2.1  # Download precise version
+  ${app} ~/projects/joomla 4.3    # Download the latest 4.3.x version (e.g. 4.3.4)
+  ${app} ~/projects/joomla 3      # Download the latest 3.x version (e.g. 3.10.12)
+  ${app} .                        # Use current directory (downloads latest version)
+"
     exit 0
 }
 
