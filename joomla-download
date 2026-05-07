@@ -133,4 +133,8 @@ error() {
     exit 1
 }
 
+curl() {
+    command curl --user-agent "${app}" "$@"
+}
+
 main "$@"
