@@ -1,4 +1,5 @@
 --format d
+--shell bash
 --require spec_helper
 
 ## Default kcov (coverage) options
