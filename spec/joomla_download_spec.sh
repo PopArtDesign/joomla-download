@@ -18,4 +18,13 @@ Describe 'joomla-download'
       The error should eq "joomla-download: path does not exist: /no/such/dir"
     End
   End
+
+  Context 'when curl is not installed'
+    It 'aborts with an error'
+      export PATH=""
+      When run script "./joomla-download" "${SHELLSPEC_WORKDIR}"
+      The status should be failure
+      The error should eq "joomla-download: curl is not installed"
+    End
+  End
 End
