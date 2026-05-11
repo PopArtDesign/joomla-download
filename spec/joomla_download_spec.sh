@@ -21,7 +21,7 @@ Describe 'joomla-download'
 
   Context 'when curl is not installed'
     It 'aborts with an error'
-      export PATH=""
+      export PATH="${SHELLSPEC_PROJECT_ROOT}/spec/fixtures/tar"
       When run script "./joomla-download" "${SHELLSPEC_WORKDIR}"
       The status should be failure
       The error should eq "joomla-download: curl is not installed"
@@ -30,7 +30,7 @@ Describe 'joomla-download'
 
   Context 'when tar is not installed'
     It 'aborts with an error'
-      export PATH="${SHELLSPEC_PROJECT_ROOT}/spec/fixtures"
+      export PATH="${SHELLSPEC_PROJECT_ROOT}/spec/fixtures/curl"
       When run script "./joomla-download" "${SHELLSPEC_WORKDIR}"
       The status should be failure
       The error should eq "joomla-download: tar is not installed"
