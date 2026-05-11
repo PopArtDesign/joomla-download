@@ -27,4 +27,13 @@ Describe 'joomla-download'
       The error should eq "joomla-download: curl is not installed"
     End
   End
+
+  Context 'when tar is not installed'
+    It 'aborts with an error'
+      export PATH="${SHELLSPEC_PROJECT_ROOT}/spec/fixtures"
+      When run script "./joomla-download" "${SHELLSPEC_WORKDIR}"
+      The status should be failure
+      The error should eq "joomla-download: tar is not installed"
+    End
+  End
 End

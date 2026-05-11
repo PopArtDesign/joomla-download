@@ -11,11 +11,11 @@ main() {
         help
     fi
 
-    if ! which curl &>/dev/null; then
+    if ! type -P curl &>/dev/null; then
         error "curl is not installed"
     fi
 
-    if ! which tar &>/dev/null; then
+    if ! type -P tar &>/dev/null; then
         error "tar is not installed"
     fi
 
