@@ -45,4 +45,20 @@ Describe 'joomla-download'
       The error should eq "joomla-download: can't find any appropriate version"
     End
   End
+
+  Context 'when Joomla version is not provided'
+    export PATH="${SHELLSPEC_PROJECT_ROOT}/spec/fixtures/curl:${PATH}"
+
+    It 'downloads and extracts the latest version'
+      When run script "./joomla-download" "${SHELLSPEC_WORKDIR}"
+
+      The status should be success
+      The output should include "Trying to download Joomla 5.2.2"
+      The output should include "https://github.com/joomla/joomla-cms/releases/download/5.2.2/Joomla_5.2.2-Stable-Full_Package.tar.gz"
+
+      # Check that 'tar' extracted the file from our test archive.
+      The file "${SHELLSPEC_WORKDIR}/joomla.txt" should be a file
+      The contents of file "${SHELLSPEC_WORKDIR}/joomla.txt" should eq "hello joomla"
+    End
+  End
 End

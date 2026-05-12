@@ -1,3 +1,52 @@
 #!/bin/bash
-# Fake curl
-exit 0
+# This mock simulates the 'curl' command for the joomla-download script tests.
+
+# We'll loop through the arguments to find flags and the URL,
+# making the checks independent of argument order.
+has_w_effective=0
+has_head=0
+has_fail=0
+url=""
+
+for arg in "$@"; do
+    case "$arg" in
+    "%{url_effective}") has_w_effective=1 ;;
+    "--head") has_head=1 ;;
+    "--fail") has_fail=1 ;;
+    "http"*) url="${arg}" ;;
+    esac
+done
+
+# 1. Simulate 'joomla_latest_version()' call to get the latest version tag.
+# This is identified by the use of `%{url_effective}`.
+if [ "$has_w_effective" -eq 1 ]; then
+    echo "https://github.com/joomla/joomla-cms/releases/tag/5.2.2"
+    exit 0
+fi
+
+# 2. Simulate the download availability check.
+# This is identified by the use of `--head` and `--fail`.
+if [ "$has_head" -eq 1 ] && [ "$has_fail" -eq 1 ]; then
+    exit 0
+fi
+
+# For the remaining cases, we distinguish by URL.
+
+# 3. Simulate the file download by outputting the content of the test tarball.
+# The URL is checked to ensure the correct version is being requested.
+if [[ "$url" == "https://github.com/joomla/joomla-cms/releases/download/"*"Joomla_"*"-Stable-Full_Package.tar.gz" ]]; then
+    cat "${SHELLSPEC_PROJECT_ROOT}/spec/fixtures/fake-joomla.tar.gz"
+    exit 0
+fi
+
+# 4. Simulate joomla_get_versions call when a specific version is looked up
+# e.g., curl -sL "https://downloads.joomla.org/cms/joomla99"
+if [[ "$url" == "https://downloads.joomla.org/cms/joomla"* ]]; then
+    # For "version not found" tests, this should return nothing,
+    # so `joomla_find_version` also returns nothing, triggering the expected error.
+    exit 0
+fi
+
+# Fail on any other unhandled call to aid in debugging tests.
+echo "ERROR: Mock curl called with unexpected arguments: $*" >&2
+exit 1
