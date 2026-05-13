@@ -18,7 +18,9 @@ wget https://raw.githubusercontent.com/PopArtDesign/joomla-download/refs/heads/m
 Usage: `joomla-download <path> [<version>]`
 
 Arguments:
+
   `<path>`      The directory where Joomla! will be downloaded and extracted.
+
   `<version>`   Optional. The specific version of Joomla! to download.
               If not provided, the latest stable version will be downloaded.
               Supports semantic versioning (e.g., 5.2.1), major.minor (e.g., 4.3),
