@@ -27,6 +27,9 @@ fi
 # 2. Simulate the download availability check.
 # This is identified by the use of `--head` and `--fail`.
 if [ "$has_head" -eq 1 ] && [ "$has_fail" -eq 1 ]; then
+    if [[ -n "${MOCK_CURL_HEAD_FAIL_URL:-}" ]] && [[ "$url" == *"${MOCK_CURL_HEAD_FAIL_URL}"* ]]; then
+        exit 1
+    fi
     exit 0
 fi
 
