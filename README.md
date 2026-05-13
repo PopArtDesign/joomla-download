@@ -1,5 +1,7 @@
 # joomla-download
 
+[![CI](https://github.com/PopArtDesign/joomla-download/actions/workflows/tests.yaml/badge.svg)](https://github.com/PopArtDesign/joomla-download/actions/workflows/tests.yaml)
+
 Bash script to download and extract a specific version of [Joomla](https://joomla.org/).
 
 ## Installation
