@@ -112,4 +112,22 @@ Describe 'joomla-download'
       The contents of file "${SHELLSPEC_WORKDIR}/joomla.txt" should eq "hello joomla"
     End
   End
+
+  Context 'when JOOMLA_VERSION environment variable is set'
+    export PATH="${SHELLSPEC_PROJECT_ROOT}/spec/fixtures/curl:${PATH}"
+    export JOOMLA_VERSION="5.2.1"
+    export MOCK_CURL_JOOMLA_VERSION="Joomla! 5.2.1 release"
+
+    It 'downloads and extracts the version specified by JOOMLA_VERSION'
+      When run script "./joomla-download" "${SHELLSPEC_WORKDIR}"
+
+      The status should be success
+      The output should include "Trying to download Joomla 5.2.1"
+      The output should include "https://github.com/joomla/joomla-cms/releases/download/5.2.1/Joomla_5.2.1-Stable-Full_Package.tar.gz"
+
+      # Check that 'tar' extracted the file from our test archive.
+      The file "${SHELLSPEC_WORKDIR}/joomla.txt" should be a file
+      The contents of file "${SHELLSPEC_WORKDIR}/joomla.txt" should eq "hello joomla"
+    End
+  End
 End
