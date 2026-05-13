@@ -54,6 +54,7 @@ Arguments:
               If not provided, the latest stable version will be downloaded.
               Supports semantic versioning (e.g., 5.2.1), major.minor (e.g., 4.3),
               or major (e.g., 3).
+              Alternatively, the version can be specified via the JOOMLA_VERSION environment variable.
 
 Options:
   -h, --help  Show this help message and exit.
