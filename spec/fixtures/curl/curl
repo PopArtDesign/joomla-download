@@ -42,7 +42,13 @@ fi
 # 4. Simulate joomla_get_versions call when a specific version is looked up
 # e.g., curl -sL "https://downloads.joomla.org/cms/joomla99"
 if [[ "$url" == "https://downloads.joomla.org/cms/joomla"* ]]; then
-    # For "version not found" tests, this should return nothing,
+    # If MOCK_CURL_JOOMLA_VERSION is set, we output a line that the joomla-download
+    # script can parse to get the version. This is for testing specific version downloads.
+    if [[ -n "${MOCK_CURL_JOOMLA_VERSION:-}" ]]; then
+        echo "Joomla! ${MOCK_CURL_JOOMLA_VERSION} release"
+    fi
+
+    # For "version not found" tests, this should return nothing if the env var is not set,
     # so `joomla_find_version` also returns nothing, triggering the expected error.
     exit 0
 fi
