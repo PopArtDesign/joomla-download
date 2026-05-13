@@ -19,13 +19,12 @@ Usage: `joomla-download <path> [<version>]`
 
 Arguments:
 
-  `<path>`      The directory where Joomla! will be downloaded and extracted.
+- `<path>` The directory where Joomla! will be downloaded and extracted.
 
-  `<version>`   Optional. The specific version of Joomla! to download.
-              If not provided, the latest stable version will be downloaded.
-              Supports semantic versioning (e.g., 5.2.1), major.minor (e.g., 4.3),
-              or major (e.g., 3).
-              Alternatively, the version can be specified via the `JOOMLA_VERSION` environment variable.
+- `<version>` The specific version of Joomla! to download. Optional.
+  If not provided, the latest stable version will be downloaded.
+  Supports semantic versioning (e.g., 5.2.1), major.minor (e.g., 4.3), or major (e.g., 3).
+  Alternatively, the version can be specified via the `JOOMLA_VERSION` environment variable.
 
 ## Examples
 
