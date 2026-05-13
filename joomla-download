@@ -77,7 +77,14 @@ joomla_find_version() {
         return
     fi
 
-    # Try to find version from joomla_get_versions (scrapes downloads.joomla.org)
+    # If it's an exact semantic version (e.g., 5.2.1, 5.0.0-alpha1),
+    # assume it's valid and let main() verify download availability.
+    if [[ "${ver}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z\.-]+)?$ ]]; then
+        echo "${ver}"
+        return
+    fi
+
+    # If not an exact version, try to find version from joomla_get_versions (scrapes downloads.joomla.org)
     declare found_version=""
     declare major="${ver%%.*}"
     case "${ver}" in
@@ -104,16 +111,7 @@ joomla_find_version() {
         return
     fi
 
-    # If not found via scraping, and it's an exact version, try direct download check
-    # This regex checks for major.minor.patch with optional pre-release.
-    # It allows versions like 5.2.1, 5.0.0-alpha1, 5.0.0-beta2, 5.0.0-rc3
-    if [[ "${ver}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z\.-]+)?$ ]]; then
-        declare -r test_url="$(joomla_download_url "${ver}")"
-        if curl -sL -o /dev/null --head --fail "${test_url}" &>/dev/null; then
-            echo "${ver}"
-            return
-        fi
-    fi
+    # If still not found, return empty (implies error)
 }
 
 joomla_latest_version() {

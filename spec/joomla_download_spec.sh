@@ -43,7 +43,7 @@ Describe 'joomla-download'
       export MOCK_CURL_HEAD_FAIL_URL="99.99.99"
       When run "./joomla-download" "${SHELLSPEC_WORKDIR}" "99.99.99"
       The status should be failure
-      The error should eq "joomla-download: can't find any appropriate version"
+      The error should eq "joomla-download: Joomla 99.99.99 is not available"
     End
   End
 
