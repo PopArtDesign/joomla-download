@@ -34,7 +34,7 @@ fi
 
 # 3. Simulate the file download by outputting the content of the test tarball.
 # The URL is checked to ensure the correct version is being requested.
-if [[ "$url" == "https://github.com/joomla/joomla-cms/releases/download/"*"Joomla_"*"-Stable-Full_Package.tar.gz" ]]; then
+if [[ "$url" == "https://github.com/joomla/joomla-cms/releases/download/"*"Joomla_"*"Full_Package.tar.gz" ]]; then
     cat "${SHELLSPEC_PROJECT_ROOT}/spec/fixtures/fake-joomla.tar.gz"
     exit 0
 fi

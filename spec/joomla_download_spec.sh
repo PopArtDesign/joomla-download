@@ -130,4 +130,35 @@ Describe 'joomla-download'
       The contents of file "${SHELLSPEC_WORKDIR}/joomla.txt" should eq "hello joomla"
     End
   End
+
+  Context 'when downloading pre-release versions'
+    export PATH="${SHELLSPEC_PROJECT_ROOT}/spec/fixtures/curl:${PATH}"
+
+    It 'downloads an alpha version'
+      export MOCK_CURL_JOOMLA_VERSION="Joomla! 5.0.0-alpha1 release"
+      When run script "./joomla-download" "${SHELLSPEC_WORKDIR}" "5.0.0-alpha1"
+      The status should be success
+      The output should include "Trying to download Joomla 5.0.0-alpha1"
+      The output should include "https://github.com/joomla/joomla-cms/releases/download/5.0.0-alpha1/Joomla_5.0.0-alpha1-Alpha-Full_Package.tar.gz"
+      The file "${SHELLSPEC_WORKDIR}/joomla.txt" should be a file
+    End
+
+    It 'downloads a beta version'
+      export MOCK_CURL_JOOMLA_VERSION="Joomla! 5.0.0-beta2 release"
+      When run script "./joomla-download" "${SHELLSPEC_WORKDIR}" "5.0.0-beta2"
+      The status should be success
+      The output should include "Trying to download Joomla 5.0.0-beta2"
+      The output should include "https://github.com/joomla/joomla-cms/releases/download/5.0.0-beta2/Joomla_5.0.0-beta2-Beta-Full_Package.tar.gz"
+      The file "${SHELLSPEC_WORKDIR}/joomla.txt" should be a file
+    End
+
+    It 'downloads a release candidate version'
+      export MOCK_CURL_JOOMLA_VERSION="Joomla! 5.0.0-rc3 release"
+      When run script "./joomla-download" "${SHELLSPEC_WORKDIR}" "5.0.0-rc3"
+      The status should be success
+      The output should include "Trying to download Joomla 5.0.0-rc3"
+      The output should include "https://github.com/joomla/joomla-cms/releases/download/5.0.0-rc3/Joomla_5.0.0-rc3-Release_Candidate-Full_Package.tar.gz"
+      The file "${SHELLSPEC_WORKDIR}/joomla.txt" should be a file
+    End
+  End
 End
