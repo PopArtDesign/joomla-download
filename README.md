@@ -25,6 +25,10 @@ Arguments:
               or major (e.g., 3).
               Alternatively, the version can be specified via the `JOOMLA_VERSION` environment variable.
 
+## Proxy Support
+
+The `joomla-download` script uses `curl` to fetch Joomla! releases. If you are behind a proxy, `curl` will automatically respect standard proxy environment variables such as `http_proxy`, `https_proxy`, and `no_proxy`. Ensure these variables are correctly configured in your shell environment if you encounter network issues.
+
 ## Examples
 
 ```sh
