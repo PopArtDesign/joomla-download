@@ -15,19 +15,15 @@ wget https://raw.githubusercontent.com/PopArtDesign/joomla-download/refs/heads/m
 
 ## Usage
 
-Usage: joomla-download <path> [<version>]
+Usage: `joomla-download <path> [<version>]`
 
 Arguments:
-  <path>      The directory where Joomla! will be downloaded and extracted.
-  <version>   Optional. The specific version of Joomla! to download.
+  `<path>`      The directory where Joomla! will be downloaded and extracted.
+  `<version>`   Optional. The specific version of Joomla! to download.
               If not provided, the latest stable version will be downloaded.
               Supports semantic versioning (e.g., 5.2.1), major.minor (e.g., 4.3),
               or major (e.g., 3).
               Alternatively, the version can be specified via the `JOOMLA_VERSION` environment variable.
-
-## Proxy Support
-
-The `joomla-download` script uses `curl` to fetch Joomla! releases. If you are behind a proxy, `curl` will automatically respect standard proxy environment variables such as `http_proxy`, `https_proxy`, and `no_proxy`. Ensure these variables are correctly configured in your shell environment if you encounter network issues.
 
 ## Examples
 
@@ -47,6 +43,10 @@ joomla-download ~/projects/joomla 3
 # Use current directory (downloads latest version)
 joomla-download .
 ```
+
+## Proxy Support
+
+The `joomla-download` script uses `curl` to fetch Joomla! releases. If you are behind a proxy, `curl` will automatically respect standard proxy environment variables such as `http_proxy`, `https_proxy`, and `no_proxy`. Ensure these variables are correctly configured in your shell environment if you encounter network issues.
 
 ## License
 
