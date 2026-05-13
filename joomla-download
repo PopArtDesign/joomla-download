@@ -85,7 +85,6 @@ joomla_find_version() {
     fi
 
     # If not an exact version, try to find version from joomla_get_versions (scrapes downloads.joomla.org)
-    declare found_version=""
     declare major="${ver%%.*}"
     case "${ver}" in
     1.0 | 1.0.*)
@@ -99,19 +98,12 @@ joomla_find_version() {
         ;;
     esac
 
-    found_version="$(joomla_get_versions "${major}" | while read v; do
+    joomla_get_versions "${major}" | while read v; do
         if [[ "${v}" == "${ver}" ]] || [[ "${v}" == "${ver}."* ]]; then
             echo "${v}"
-            break # Found it, exit loop
+            return
         fi
-    done)"
-
-    if [[ -n "${found_version}" ]]; then
-        echo "${found_version}"
-        return
-    fi
-
-    # If still not found, return empty (implies error)
+    done
 }
 
 joomla_latest_version() {
