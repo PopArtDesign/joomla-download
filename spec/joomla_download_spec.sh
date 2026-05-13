@@ -64,7 +64,7 @@ Describe 'joomla-download'
 
   Context 'when exact Joomla version is provided'
     export PATH="${SHELLSPEC_PROJECT_ROOT}/spec/fixtures/curl:${PATH}"
-    export MOCK_CURL_JOOMLA_VERSION="5.2.1"
+    export MOCK_CURL_JOOMLA_VERSION="Joomla! 5.2.1 release"
 
     It 'downloads and extracts the specified version'
       When run script "./joomla-download" "${SHELLSPEC_WORKDIR}" "5.2.1"
@@ -72,6 +72,23 @@ Describe 'joomla-download'
       The status should be success
       The output should include "Trying to download Joomla 5.2.1"
       The output should include "https://github.com/joomla/joomla-cms/releases/download/5.2.1/Joomla_5.2.1-Stable-Full_Package.tar.gz"
+
+      # Check that 'tar' extracted the file from our test archive.
+      The file "${SHELLSPEC_WORKDIR}/joomla.txt" should be a file
+      The contents of file "${SHELLSPEC_WORKDIR}/joomla.txt" should eq "hello joomla"
+    End
+  End
+
+  Context 'when non-exact Joomla version is provided'
+    export PATH="${SHELLSPEC_PROJECT_ROOT}/spec/fixtures/curl:${PATH}"
+    export MOCK_CURL_JOOMLA_VERSION="Joomla! 4.3.2 release\nJoomla! 4.3.1 release\nJoomla! 4.2.9 release"
+
+    It 'downloads and extracts the latest matching version'
+      When run script "./joomla-download" "${SHELLSPEC_WORKDIR}" "4.3"
+
+      The status should be success
+      The output should include "Trying to download Joomla 4.3.2"
+      The output should include "https://github.com/joomla/joomla-cms/releases/download/4.3.2/Joomla_4.3.2-Stable-Full_Package.tar.gz"
 
       # Check that 'tar' extracted the file from our test archive.
       The file "${SHELLSPEC_WORKDIR}/joomla.txt" should be a file
