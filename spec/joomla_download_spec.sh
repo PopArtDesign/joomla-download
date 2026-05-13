@@ -42,6 +42,8 @@ Describe 'joomla-download'
       export PATH="${SHELLSPEC_PROJECT_ROOT}/spec/fixtures/curl:${PATH}"
       export MOCK_CURL_HEAD_FAIL_URL="99.99.99"
       When run "./joomla-download" "${SHELLSPEC_WORKDIR}" "99.99.99"
+      The output should include "Trying to download Joomla 99.99.99"
+      The output should include "https://github.com/joomla/joomla-cms/releases/download/99.99.99/Joomla_99.99.99-Stable-Full_Package.tar.gz"
       The status should be failure
       The error should eq "joomla-download: Joomla 99.99.99 is not available"
     End
