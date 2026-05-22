@@ -45,6 +45,14 @@ joomla-download ~/projects/joomla 3
 joomla-download .
 ```
 
+## Setting a default version
+
+You can set a default Joomla! version by exporting the `JOOMLA_VERSION` environment variable in your shell's configuration file (e.g., `~/.bashrc`, `~/.zshrc`). This will make the specified version the default when no version argument is provided to the `joomla-download` script:
+
+```sh
+export JOOMLA_VERSION="4.3"
+```
+
 ## Proxy Support
 
 The `joomla-download` script uses `curl` to fetch Joomla! releases. If you are behind a proxy, `curl` will automatically respect standard proxy environment variables such as `http_proxy`, `https_proxy`, and `no_proxy`. Ensure these variables are correctly configured in your shell environment if you encounter network issues.
