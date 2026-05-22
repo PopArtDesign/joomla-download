@@ -4,7 +4,7 @@ set -euo pipefail
 shopt -s lastpipe nullglob dotglob
 
 declare -r app_name="${0##*/}"
-declare -r app_version="1.0"
+declare -r app_version="1.0-dev"
 declare -r base_url="https://github.com/joomla/joomla-cms/releases"
 
 main() {
