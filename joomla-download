@@ -3,12 +3,17 @@
 set -euo pipefail
 shopt -s lastpipe nullglob dotglob
 
-declare -r app="${0##*/}"
+declare -r app_name="${0##*/}"
+declare -r app_version="1.0"
 declare -r base_url="https://github.com/joomla/joomla-cms/releases"
 
 main() {
+    if [[ "${1:-}" == '--version' ]]; then
+        show_version
+    fi
+
     if [[ -z "${1:-}" || "${1:-}" =~ --help|-h ]]; then
-        help
+        show_help
     fi
 
     if ! type -P curl &>/dev/null; then
@@ -43,10 +48,15 @@ main() {
     curl -sL "${download_url}" | tar -xzv -C "${path}"
 }
 
-help() {
+show_version() {
+    echo "${app_name} ${app_version}"
+    exit 0
+}
+
+show_help() {
     echo -n "Download and extract a specific version of Joomla!. (c) PopArtDesign, https://popartdesign.ru
 
-Usage: ${app} <path> [<version>]
+Usage: ${app_name} <path> [<version>]
 
 Arguments:
   <path>      The directory where Joomla! will be downloaded and extracted.
@@ -60,11 +70,11 @@ Options:
   -h, --help  Show this help message and exit.
 
 Examples:
-  ${app} ~/projects/joomla        # Download the latest version
-  ${app} ~/projects/joomla 5.2.1  # Download precise version
-  ${app} ~/projects/joomla 4.3    # Download the latest 4.3.x version (e.g. 4.3.4)
-  ${app} ~/projects/joomla 3      # Download the latest 3.x version (e.g. 3.10.12)
-  ${app} .                        # Use current directory (downloads latest version)
+  ${app_name} ~/projects/joomla        # Download the latest version
+  ${app_name} ~/projects/joomla 5.2.1  # Download precise version
+  ${app_name} ~/projects/joomla 4.3    # Download the latest 4.3.x version (e.g. 4.3.4)
+  ${app_name} ~/projects/joomla 3      # Download the latest 3.x version (e.g. 3.10.12)
+  ${app_name} .                        # Use current directory (downloads latest version)
 "
     exit 0
 }
@@ -138,12 +148,12 @@ joomla_download_url() {
 }
 
 error() {
-    echo "${app}: ${1}" >&2
+    echo "${app_name}: ${1}" >&2
     exit 1
 }
 
 curl() {
-    command curl --user-agent "${app}" "$@"
+    command curl --user-agent "${app_name} ${app_version}" "$@"
 }
 
 main "$@"
