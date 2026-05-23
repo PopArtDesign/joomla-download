@@ -9,7 +9,7 @@ Bash script to download and extract a specific version of [Joomla](https://jooml
 Just download the script to a directory in your `$PATH`. For example:
 
 ```sh
-wget https://raw.githubusercontent.com/PopArtDesign/joomla-download/refs/heads/main/joomla-download \
+wget https://raw.githubusercontent.com/PopArtDesign/joomla-download/refs/tags/v1.0/joomla-download \
     -O ~/.local/bin/joomla-download && chmod +x ~/.local/bin/joomla-download
 ```
 
